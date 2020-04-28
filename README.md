@@ -1,2 +1,2 @@
-# Degrees
- CS50's Project AI
+# CS50's Project AI
+ 
