@@ -1,8 +1,6 @@
 import csv
 import sys
 
-import pandas as pd
-
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -61,51 +59,42 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
-    monthdict = {
-        "Jan": 0,
-        "Feb": 1,
-        "Mar": 2,
-        "April": 3,
-        "May": 4,
-        "June": 5,
-        "Jul": 6,
-        "Aug": 7,
-        "Sep": 8,
-        "Oct": 9,
-        "Nov": 10,
-        "Dec": 11
-    }
-
+    
     labels = []
     evidence = []
 
-    with open("shopping.csv") as csvshop:
-        reader = csv.reader(csvshop)        
+    monthdict = {
+        "Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "June": 5, "Jul": 6,
+        "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11
+    }
+
+    with open("shopping.csv") as f:
+        reader = csv.reader(f)
         next(reader)
 
         for row in reader:
-            evidence.append((
+            evidence.append(
                 [int(row[0]), float(row[1]), int(row[2]), float(row[3]), int(row[4]), float(row[5])] +
                 [float(e) for e in row[6:9]] + [monthdict[row[10]]] +
                 [int(e) for e in row[11:14]] + [0 if row[15] == "New_Visitor" else 1] +
                 [1 if row[16] == "TRUE" else 0]
-            ))
+            )
 
-            labels.append(1 if row[17] == "TRUE" else 0)
-
+            labels.append(0 if row[17] == "FALSE" else 1)
+    
     return (evidence, labels)
-
 
 def train_model(evidence, labels):
     """
     Given a list of evidence lists and a list of labels, return a
     fitted k-nearest neighbor model (k=1) trained on the data.
     """
-    
-    neigh = KNeighborsClassifier(n_neighbors=1)
-    neigh.fit(evidence, labels)
-    return neigh
 
+    model = KNeighborsClassifier(n_neighbors=1)
+    model.fit(evidence, labels)
+    
+    return model
+    
 
 def evaluate(labels, predictions):
     """
@@ -122,23 +111,24 @@ def evaluate(labels, predictions):
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
+    pos = 0
+    neg = 0
+    true_pos_rate = 0
+    true_neg_rate = 0
 
-    pos = labels.count(1)
-    neg = labels.count(0)
-
-    true_positive_rate = 0
-    true_negative_rate = 0
-
-    # Count instances where predictions match labels
     for i in range(len(labels)):
+        if labels[i] == 1:
+            pos += 1
+        else:
+            neg += 1
         if predictions[i] == labels[i]:
             if predictions[i] == 1:
-                true_positive_rate += 1
+                true_pos_rate += 1
             else:
-                true_negative_rate += 1
-
-    sensitivity = true_positive_rate / pos
-    specificity = true_negative_rate / neg
+                true_neg_rate += 1
+    
+    sensitivity = true_pos_rate / pos
+    specificity = true_neg_rate / neg
 
     return (sensitivity, specificity)
 
