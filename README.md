@@ -5,3 +5,5 @@
 <h2><a href="https://github.com/PapaArt/cs50_project_AI/tree/master/Week%200/tictactoe">Tic-tac-toe</a> project.</h2>
 <h2><a href="https://github.com/PapaArt/cs50_project_AI/tree/master/Week%201/knights">Knights</a> project.</h2>
 <h2><a href="https://github.com/PapaArt/cs50_project_AI/tree/master/Week%202/heredity">Heredity</a> project.</h2>
+<h2><a href="https://github.com/PapaArt/cs50_project_AI/tree/master/Week%203/crossword">Crossword</a> project.</h2>
+<h2><a href="https://github.com/PapaArt/cs50_project_AI/tree/master/Week%204/shopping">Shopping</a> project.</h2>
